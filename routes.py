@@ -394,7 +394,6 @@ def admin_financial():
                          net_profit=net_profit)
 
 # Initialize default admin user
-@app.before_first_request
 def create_default_admin():
     admin = User.query.filter_by(username='admin').first()
     if not admin:
@@ -402,3 +401,7 @@ def create_default_admin():
         admin.set_password('admin123')
         db.session.add(admin)
         db.session.commit()
+
+# Create default admin when app starts
+with app.app_context():
+    create_default_admin()
