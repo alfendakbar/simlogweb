@@ -1,0 +1,164 @@
+{% extends "base.html" %}
+
+{% block title %}Our Services - SIMLOG{% endblock %}
+
+{% block content %}
+<div class="hero-section">
+    <div class="carousel-container">
+        <div class="carousel-wrapper">
+            <div class="carousel-slide active">
+                <img src="https://pixabay.com/get/gef5e12739eab9a4e1bc47ce4fc1f21f0e68cd4fd5bf0767d0ba9d83fc4e31c3f1dbb474ebbc04e54b821fbcf7b199a28ea5966e61a19b37e3d5d148afbe2a710_1280.jpg" alt="Logistics Warehouse 1">
+            </div>
+            <div class="carousel-slide">
+                <img src="https://pixabay.com/get/g4d9d35e45728d751acb1fc9ee688a966ba4d5ad37da101968f1d94e42daafb89ceeeab7f311a52e29fc5aff787c8c02b44bfa02e5cb97346a545b0a02cd0115b_1280.jpg" alt="Logistics Warehouse 2">
+            </div>
+            <div class="carousel-slide">
+                <img src="https://pixabay.com/get/g912edb2aeea7eef61d9425b998bdd3bb0c3c199fc145e6ba8d114f317acec3a29ae2db5b29342e8f6718cef0dd6c1d2b9f0ae58f2b8cc215166c69c3a4d23633_1280.jpg" alt="Logistics Warehouse 3">
+            </div>
+            <div class="carousel-slide">
+                <img src="https://pixabay.com/get/g30955f1f5891c8a7951315231441047f5098ad481fd0a2faf301ae060b450cd4f62a6fc498840e77042b1e0b568b8b58bad00687c550d0b0aa971765015787ef_1280.jpg" alt="Logistics Warehouse 4">
+            </div>
+        </div>
+        
+        <button class="carousel-control prev" onclick="changeSlide(-1)">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+        <button class="carousel-control next" onclick="changeSlide(1)">
+            <i class="fas fa-chevron-right"></i>
+        </button>
+        
+        <div class="hero-content">
+            <h1 class="hero-title">Our Services</h1>
+            <p class="hero-subtitle">Layanan Logistik Terpadu</p>
+        </div>
+    </div>
+</div>
+
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-10 mx-auto">
+                <h2 class="text-center mb-5">Layanan Unggulan SIMLOG</h2>
+                
+                <div class="row">
+                    <div class="col-lg-6 mb-4">
+                        <div class="card h-100 shadow-sm">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center mb-3">
+                                    <i class="fas fa-warehouse fa-2x text-primary me-3"></i>
+                                    <h5 class="card-title mb-0">Warehouse Management</h5>
+                                </div>
+                                <p class="card-text">Sistem manajemen gudang yang terintegrasi dengan fitur:</p>
+                                <ul class="list-unstyled">
+                                    <li><i class="fas fa-check text-success me-2"></i>Real-time inventory tracking</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>Automated stock alerts</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>Barcode scanning system</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>Multi-location support</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-6 mb-4">
+                        <div class="card h-100 shadow-sm">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center mb-3">
+                                    <i class="fas fa-shipping-fast fa-2x text-primary me-3"></i>
+                                    <h5 class="card-title mb-0">Order Management</h5>
+                                </div>
+                                <p class="card-text">Kelola pesanan dari awal hingga pengiriman:</p>
+                                <ul class="list-unstyled">
+                                    <li><i class="fas fa-check text-success me-2"></i>Order processing automation</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>Supplier integration</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>Purchase order management</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>Order status tracking</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-6 mb-4">
+                        <div class="card h-100 shadow-sm">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center mb-3">
+                                    <i class="fas fa-route fa-2x text-primary me-3"></i>
+                                    <h5 class="card-title mb-0">Distribution Management</h5>
+                                </div>
+                                <p class="card-text">Sistem distribusi yang efisien:</p>
+                                <ul class="list-unstyled">
+                                    <li><i class="fas fa-check text-success me-2"></i>Route optimization</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>Delivery scheduling</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>Real-time tracking</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>Proof of delivery</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-6 mb-4">
+                        <div class="card h-100 shadow-sm">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center mb-3">
+                                    <i class="fas fa-chart-line fa-2x text-primary me-3"></i>
+                                    <h5 class="card-title mb-0">Financial Management</h5>
+                                </div>
+                                <p class="card-text">Kelola keuangan logistik dengan mudah:</p>
+                                <ul class="list-unstyled">
+                                    <li><i class="fas fa-check text-success me-2"></i>Cost tracking & analysis</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>Invoice management</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>Financial reporting</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>Budget planning</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-6 mb-4">
+                        <div class="card h-100 shadow-sm">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center mb-3">
+                                    <i class="fas fa-handshake fa-2x text-primary me-3"></i>
+                                    <h5 class="card-title mb-0">Supplier Management</h5>
+                                </div>
+                                <p class="card-text">Kelola hubungan dengan supplier:</p>
+                                <ul class="list-unstyled">
+                                    <li><i class="fas fa-check text-success me-2"></i>Supplier database</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>Performance evaluation</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>Contract management</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>Price comparison</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-6 mb-4">
+                        <div class="card h-100 shadow-sm">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center mb-3">
+                                    <i class="fas fa-mobile-alt fa-2x text-primary me-3"></i>
+                                    <h5 class="card-title mb-0">Mobile Application</h5>
+                                </div>
+                                <p class="card-text">Akses sistem dari mana saja:</p>
+                                <ul class="list-unstyled">
+                                    <li><i class="fas fa-check text-success me-2"></i>Cross-platform support</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>Offline capability</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>Push notifications</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>GPS integration</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="text-center mt-5">
+                    <h4>Butuh Konsultasi?</h4>
+                    <p class="text-muted">Tim ahli kami siap membantu Anda memilih solusi yang tepat</p>
+                    <a href="{{ url_for('contact') }}" class="btn btn-primary btn-lg">
+                        <i class="fas fa-phone me-2"></i>Hubungi Kami
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

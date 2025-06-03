@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+
+{% block title %}Logistics - SIMLOG{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-5 pt-3">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-3 col-lg-2 sidebar">
+            <div class="d-flex flex-column">
+                <h5 class="text-primary mb-3">
+                    <i class="fas fa-tachometer-alt me-2"></i>User Dashboard
+                </h5>
+                <nav class="nav flex-column">
+                    <a class="nav-link" href="{{ url_for('user_dashboard') }}">
+                        <i class="fas fa-home me-2"></i>Overview
+                    </a>
+                    <a class="nav-link active" href="{{ url_for('logistics') }}">
+                        <i class="fas fa-warehouse me-2"></i>Logistics
+                    </a>
+                    <a class="nav-link" href="{{ url_for('orders') }}">
+                        <i class="fas fa-shopping-cart me-2"></i>Orders
+                    </a>
+                    <a class="nav-link" href="{{ url_for('distribution') }}">
+                        <i class="fas fa-truck me-2"></i>Distribution
+                    </a>
+                </nav>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="col-md-9 col-lg-10">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2>Logistics Management</h2>
+            </div>
+            
+            <!-- Low Stock Alerts -->
+            {% if low_stock_products %}
+            <div class="alert alert-warning">
+                <h5><i class="fas fa-exclamation-triangle me-2"></i>Low Stock Alert</h5>
+                <p>The following products are running low on stock:</p>
+                <ul class="mb-0">
+                    {% for product in low_stock_products %}
+                    <li>{{ product.name }} - Current Stock: {{ product.stock_quantity }}, Min Level: {{ product.min_stock_level }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+            
+            <!-- Stock Overview -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Stock Overview</h5>
+                </div>
+                <div class="card-body">
+                    {% if products %}
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Product Name</th>
+                                        <th>Description</th>
+                                        <th>Current Stock</th>
+                                        <th>Min Level</th>
+                                        <th>Unit Price</th>
+                                        <th>Status</th>
+                                        <th>Last Updated</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for product in products %}
+                                    <tr>
+                                        <td><strong>{{ product.name }}</strong></td>
+                                        <td>{{ product.description or 'No description' }}</td>
+                                        <td>
+                                            <span class="badge bg-{% if product.stock_quantity <= product.min_stock_level %}danger{% elif product.stock_quantity <= product.min_stock_level * 2 %}warning{% else %}success{% endif %}">
+                                                {{ product.stock_quantity }}
+                                            </span>
+                                        </td>
+                                        <td>{{ product.min_stock_level }}</td>
+                                        <td>Rp {{ "{:,.0f}".format(product.unit_price) }}</td>
+                                        <td>
+                                            {% if product.stock_quantity <= product.min_stock_level %}
+                                                <span class="badge bg-danger">Critical</span>
+                                            {% elif product.stock_quantity <= product.min_stock_level * 2 %}
+                                                <span class="badge bg-warning">Low</span>
+                                            {% else %}
+                                                <span class="badge bg-success">Good</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ product.updated_at.strftime('%d %b %Y') }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="text-center py-5">
+                            <i class="fas fa-boxes fa-3x text-muted mb-3"></i>
+                            <h5 class="text-muted">No Products Available</h5>
+                            <p class="text-muted">Contact admin to add products to the system.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

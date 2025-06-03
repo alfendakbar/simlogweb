@@ -1,0 +1,177 @@
+{% extends "base.html" %}
+
+{% block title %}Contact Us - SIMLOG{% endblock %}
+
+{% block content %}
+<div class="hero-section">
+    <div class="carousel-container">
+        <div class="carousel-wrapper">
+            <div class="carousel-slide active">
+                <img src="https://pixabay.com/get/gef5e12739eab9a4e1bc47ce4fc1f21f0e68cd4fd5bf0767d0ba9d83fc4e31c3f1dbb474ebbc04e54b821fbcf7b199a28ea5966e61a19b37e3d5d148afbe2a710_1280.jpg" alt="Logistics Warehouse 1">
+            </div>
+            <div class="carousel-slide">
+                <img src="https://pixabay.com/get/g4d9d35e45728d751acb1fc9ee688a966ba4d5ad37da101968f1d94e42daafb89ceeeab7f311a52e29fc5aff787c8c02b44bfa02e5cb97346a545b0a02cd0115b_1280.jpg" alt="Logistics Warehouse 2">
+            </div>
+            <div class="carousel-slide">
+                <img src="https://pixabay.com/get/g912edb2aeea7eef61d9425b998bdd3bb0c3c199fc145e6ba8d114f317acec3a29ae2db5b29342e8f6718cef0dd6c1d2b9f0ae58f2b8cc215166c69c3a4d23633_1280.jpg" alt="Logistics Warehouse 3">
+            </div>
+            <div class="carousel-slide">
+                <img src="https://pixabay.com/get/g30955f1f5891c8a7951315231441047f5098ad481fd0a2faf301ae060b450cd4f62a6fc498840e77042b1e0b568b8b58bad00687c550d0b0aa971765015787ef_1280.jpg" alt="Logistics Warehouse 4">
+            </div>
+        </div>
+        
+        <button class="carousel-control prev" onclick="changeSlide(-1)">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+        <button class="carousel-control next" onclick="changeSlide(1)">
+            <i class="fas fa-chevron-right"></i>
+        </button>
+        
+        <div class="hero-content">
+            <h1 class="hero-title">Contact Us</h1>
+            <p class="hero-subtitle">Hubungi Tim SIMLOG</p>
+        </div>
+    </div>
+</div>
+
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <h2 class="text-center mb-5">Hubungi Kami</h2>
+                
+                <div class="row mb-5">
+                    <div class="col-md-4 text-center mb-4">
+                        <div class="card border-0">
+                            <div class="card-body">
+                                <i class="fas fa-map-marker-alt fa-3x text-primary mb-3"></i>
+                                <h5>Alamat Kantor</h5>
+                                <p class="text-muted">
+                                    Jl. Sudirman No. 123<br>
+                                    Jakarta Selatan 12190<br>
+                                    Indonesia
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4 text-center mb-4">
+                        <div class="card border-0">
+                            <div class="card-body">
+                                <i class="fas fa-phone fa-3x text-primary mb-3"></i>
+                                <h5>Telepon</h5>
+                                <p class="text-muted">
+                                    <strong>Main:</strong> +62 21 1234 5678<br>
+                                    <strong>WhatsApp:</strong> +62 812 3456 7890<br>
+                                    <strong>Hotline:</strong> 0800-1-SIMLOG
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4 text-center mb-4">
+                        <div class="card border-0">
+                            <div class="card-body">
+                                <i class="fas fa-envelope fa-3x text-primary mb-3"></i>
+                                <h5>Email</h5>
+                                <p class="text-muted">
+                                    <strong>General:</strong> info@simlog.com<br>
+                                    <strong>Support:</strong> support@simlog.com<br>
+                                    <strong>Sales:</strong> sales@simlog.com
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Contact Form -->
+                <div class="card shadow">
+                    <div class="card-header bg-primary text-white">
+                        <h4 class="mb-0"><i class="fas fa-paper-plane me-2"></i>Kirim Pesan</h4>
+                    </div>
+                    <div class="card-body">
+                        <form>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="name" class="form-label">Nama Lengkap</label>
+                                    <input type="text" class="form-control" id="name" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="email" class="form-label">Email</label>
+                                    <input type="email" class="form-control" id="email" required>
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="phone" class="form-label">Nomor Telepon</label>
+                                    <input type="tel" class="form-control" id="phone">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="company" class="form-label">Nama Perusahaan</label>
+                                    <input type="text" class="form-control" id="company">
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="subject" class="form-label">Subjek</label>
+                                <select class="form-select" id="subject" required>
+                                    <option value="">Pilih subjek...</option>
+                                    <option value="general">Pertanyaan Umum</option>
+                                    <option value="quote">Permintaan Quotation</option>
+                                    <option value="support">Technical Support</option>
+                                    <option value="partnership">Kerjasama Bisnis</option>
+                                    <option value="complaint">Keluhan</option>
+                                </select>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="message" class="form-label">Pesan</label>
+                                <textarea class="form-control" id="message" rows="5" placeholder="Tuliskan pesan Anda di sini..." required></textarea>
+                            </div>
+                            
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary btn-lg">
+                                    <i class="fas fa-paper-plane me-2"></i>Kirim Pesan
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                
+                <!-- Business Hours -->
+                <div class="mt-5">
+                    <h4 class="text-center mb-4">Jam Operasional</h4>
+                    <div class="row">
+                        <div class="col-md-6 mx-auto">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <span><strong>Senin - Jumat</strong></span>
+                                        <span>08:00 - 18:00 WIB</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <span><strong>Sabtu</strong></span>
+                                        <span>08:00 - 15:00 WIB</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <span><strong>Minggu</strong></span>
+                                        <span>Tutup</span>
+                                    </div>
+                                    <hr>
+                                    <div class="text-center">
+                                        <small class="text-muted">
+                                            <i class="fas fa-phone me-1"></i>
+                                            Customer Support 24/7 untuk pelanggan Premium
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

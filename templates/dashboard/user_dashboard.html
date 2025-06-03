@@ -1,0 +1,159 @@
+{% extends "base.html" %}
+
+{% block title %}User Dashboard - SIMLOG{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-5 pt-3">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-3 col-lg-2 sidebar">
+            <div class="d-flex flex-column">
+                <h5 class="text-primary mb-3">
+                    <i class="fas fa-tachometer-alt me-2"></i>User Dashboard
+                </h5>
+                <nav class="nav flex-column">
+                    <a class="nav-link active" href="{{ url_for('user_dashboard') }}">
+                        <i class="fas fa-home me-2"></i>Overview
+                    </a>
+                    <a class="nav-link" href="{{ url_for('logistics') }}">
+                        <i class="fas fa-warehouse me-2"></i>Logistics
+                    </a>
+                    <a class="nav-link" href="{{ url_for('orders') }}">
+                        <i class="fas fa-shopping-cart me-2"></i>Orders
+                    </a>
+                    <a class="nav-link" href="{{ url_for('distribution') }}">
+                        <i class="fas fa-truck me-2"></i>Distribution
+                    </a>
+                </nav>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="col-md-9 col-lg-10">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2>Dashboard Overview</h2>
+                <div class="text-muted">
+                    Welcome, {{ current_user.username }}!
+                </div>
+            </div>
+            
+            <!-- Statistics Cards -->
+            <div class="row mb-4">
+                <div class="col-lg-3 col-md-6 mb-3">
+                    <div class="card bg-primary text-white">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <div class="h4">{{ total_orders }}</div>
+                                    <div>Total Orders</div>
+                                </div>
+                                <div>
+                                    <i class="fas fa-shopping-cart fa-2x"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-3 col-md-6 mb-3">
+                    <div class="card bg-warning text-white">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <div class="h4">{{ pending_orders }}</div>
+                                    <div>Pending Orders</div>
+                                </div>
+                                <div>
+                                    <i class="fas fa-clock fa-2x"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-3 col-md-6 mb-3">
+                    <div class="card bg-info text-white">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <div class="h4">{{ in_transit }}</div>
+                                    <div>In Transit</div>
+                                </div>
+                                <div>
+                                    <i class="fas fa-shipping-fast fa-2x"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-3 col-md-6 mb-3">
+                    <div class="card bg-success text-white">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <div class="h4">24/7</div>
+                                    <div>Support</div>
+                                </div>
+                                <div>
+                                    <i class="fas fa-headset fa-2x"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Recent Orders -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Recent Orders</h5>
+                </div>
+                <div class="card-body">
+                    {% if recent_orders %}
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Order ID</th>
+                                        <th>Product</th>
+                                        <th>Supplier</th>
+                                        <th>Status</th>
+                                        <th>Total</th>
+                                        <th>Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for order in recent_orders %}
+                                    <tr>
+                                        <td>#{{ order.id }}</td>
+                                        <td>{{ order.product.name }}</td>
+                                        <td>{{ order.supplier.name }}</td>
+                                        <td>
+                                            <span class="badge bg-{% if order.status == 'delivered' %}success{% elif order.status == 'confirmed' %}info{% elif order.status == 'shipped' %}warning{% else %}secondary{% endif %}">
+                                                {{ order.status.title() }}
+                                            </span>
+                                        </td>
+                                        <td>Rp {{ "{:,.0f}".format(order.total_cost) }}</td>
+                                        <td>{{ order.order_date.strftime('%d %b %Y') }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="text-center py-4">
+                            <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
+                            <p class="text-muted">No orders yet. <a href="{{ url_for('orders') }}">Create your first order</a></p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+{% endblock %}

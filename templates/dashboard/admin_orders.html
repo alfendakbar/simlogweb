@@ -1,0 +1,225 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Orders - SIMLOG{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-5 pt-3">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-3 col-lg-2 sidebar">
+            <div class="d-flex flex-column">
+                <h5 class="text-danger mb-3">
+                    <i class="fas fa-user-shield me-2"></i>Admin Panel
+                </h5>
+                <nav class="nav flex-column">
+                    <a class="nav-link" href="{{ url_for('admin_dashboard') }}">
+                        <i class="fas fa-home me-2"></i>Overview
+                    </a>
+                    <a class="nav-link" href="{{ url_for('admin_logistics') }}">
+                        <i class="fas fa-warehouse me-2"></i>Logistics
+                    </a>
+                    <a class="nav-link active" href="{{ url_for('admin_orders') }}">
+                        <i class="fas fa-shopping-cart me-2"></i>Orders
+                    </a>
+                    <a class="nav-link" href="{{ url_for('admin_distribution') }}">
+                        <i class="fas fa-truck me-2"></i>Distribution
+                    </a>
+                    <a class="nav-link" href="{{ url_for('admin_suppliers') }}">
+                        <i class="fas fa-handshake me-2"></i>Suppliers
+                    </a>
+                    <a class="nav-link" href="{{ url_for('admin_financial') }}">
+                        <i class="fas fa-chart-line me-2"></i>Financial
+                    </a>
+                </nav>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="col-md-9 col-lg-10">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2>Order Management</h2>
+                <div class="d-flex gap-2">
+                    <select class="form-select" id="statusFilter" onchange="filterOrders()">
+                        <option value="">All Status</option>
+                        <option value="pending">Pending</option>
+                        <option value="confirmed">Confirmed</option>
+                        <option value="shipped">Shipped</option>
+                        <option value="delivered">Delivered</option>
+                    </select>
+                </div>
+            </div>
+            
+            <!-- Order Statistics -->
+            <div class="row mb-4">
+                <div class="col-md-3 mb-3">
+                    <div class="card bg-secondary text-white">
+                        <div class="card-body text-center">
+                            <i class="fas fa-clipboard-list fa-2x mb-2"></i>
+                            <div class="h4">{{ orders|length }}</div>
+                            <div>Total Orders</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <div class="card bg-warning text-white">
+                        <div class="card-body text-center">
+                            <i class="fas fa-clock fa-2x mb-2"></i>
+                            <div class="h4">{{ orders|selectattr('status', 'equalto', 'pending')|list|length }}</div>
+                            <div>Pending</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <div class="card bg-info text-white">
+                        <div class="card-body text-center">
+                            <i class="fas fa-check-circle fa-2x mb-2"></i>
+                            <div class="h4">{{ orders|selectattr('status', 'equalto', 'confirmed')|list|length }}</div>
+                            <div>Confirmed</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <div class="card bg-success text-white">
+                        <div class="card-body text-center">
+                            <i class="fas fa-truck fa-2x mb-2"></i>
+                            <div class="h4">{{ orders|selectattr('status', 'equalto', 'delivered')|list|length }}</div>
+                            <div>Delivered</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Orders List -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">All Orders</h5>
+                </div>
+                <div class="card-body">
+                    {% if orders %}
+                        <div class="table-responsive">
+                            <table class="table table-striped" id="ordersTable">
+                                <thead>
+                                    <tr>
+                                        <th>Order ID</th>
+                                        <th>Customer</th>
+                                        <th>Product</th>
+                                        <th>Supplier</th>
+                                        <th>Quantity</th>
+                                        <th>Package</th>
+                                        <th>Total Cost</th>
+                                        <th>Status</th>
+                                        <th>Order Date</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for order in orders %}
+                                    <tr data-status="{{ order.status }}">
+                                        <td><strong>#{{ order.id }}</strong></td>
+                                        <td>{{ order.user.username }}</td>
+                                        <td>{{ order.product.name }}</td>
+                                        <td>{{ order.supplier.name }}</td>
+                                        <td>{{ order.quantity }}</td>
+                                        <td>
+                                            <span class="badge bg-{% if order.package_type == 'premium' %}warning{% elif order.package_type == 'standard' %}primary{% else %}secondary{% endif %}">
+                                                {{ order.package_type.title() }}
+                                            </span>
+                                        </td>
+                                        <td>Rp {{ "{:,.0f}".format(order.total_cost) }}</td>
+                                        <td>
+                                            <span class="badge bg-{% if order.status == 'delivered' %}success{% elif order.status == 'confirmed' %}info{% elif order.status == 'shipped' %}warning{% else %}secondary{% endif %}">
+                                                {{ order.status.title() }}
+                                            </span>
+                                        </td>
+                                        <td>{{ order.order_date.strftime('%d %b %Y') }}</td>
+                                        <td>
+                                            {% if order.status == 'pending' %}
+                                            <form method="POST" action="{{ url_for('confirm_order', order_id=order.id) }}" style="display: inline;">
+                                                <button type="submit" class="btn btn-sm btn-success" title="Confirm Order">
+                                                    <i class="fas fa-check"></i>
+                                                </button>
+                                            </form>
+                                            {% endif %}
+                                            <button class="btn btn-sm btn-outline-info" onclick="viewOrderDetails({{ order.id }})" title="View Details">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="text-center py-5">
+                            <i class="fas fa-shopping-cart fa-3x text-muted mb-3"></i>
+                            <h5 class="text-muted">No Orders Yet</h5>
+                            <p class="text-muted">Orders from customers will appear here.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Order Details Modal -->
+<div class="modal fade" id="orderDetailsModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Order Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" id="orderDetailsContent">
+                <!-- Order details will be loaded here -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function filterOrders() {
+    const filterValue = document.getElementById('statusFilter').value;
+    const rows = document.querySelectorAll('#ordersTable tbody tr');
+    
+    rows.forEach(row => {
+        if (filterValue === '' || row.dataset.status === filterValue) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    });
+}
+
+function viewOrderDetails(orderId) {
+    // This would typically fetch order details via AJAX
+    // For now, we'll show a placeholder
+    const modal = new bootstrap.Modal(document.getElementById('orderDetailsModal'));
+    document.getElementById('orderDetailsContent').innerHTML = `
+        <div class="text-center">
+            <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="mt-3">Loading order details for Order #${orderId}...</p>
+        </div>
+    `;
+    modal.show();
+    
+    // Simulate loading delay
+    setTimeout(() => {
+        document.getElementById('orderDetailsContent').innerHTML = `
+            <div class="alert alert-info">
+                <h6>Order #${orderId} Details</h6>
+                <p>Detailed order information would be displayed here in a full implementation.</p>
+                <p>This would include customer details, shipping address, payment information, and order history.</p>
+            </div>
+        `;
+    }, 1000);
+}
+</script>
+{% endblock %}

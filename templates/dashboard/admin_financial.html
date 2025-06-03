@@ -1,0 +1,334 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Financial - SIMLOG{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-5 pt-3">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-3 col-lg-2 sidebar">
+            <div class="d-flex flex-column">
+                <h5 class="text-danger mb-3">
+                    <i class="fas fa-user-shield me-2"></i>Admin Panel
+                </h5>
+                <nav class="nav flex-column">
+                    <a class="nav-link" href="{{ url_for('admin_dashboard') }}">
+                        <i class="fas fa-home me-2"></i>Overview
+                    </a>
+                    <a class="nav-link" href="{{ url_for('admin_logistics') }}">
+                        <i class="fas fa-warehouse me-2"></i>Logistics
+                    </a>
+                    <a class="nav-link" href="{{ url_for('admin_orders') }}">
+                        <i class="fas fa-shopping-cart me-2"></i>Orders
+                    </a>
+                    <a class="nav-link" href="{{ url_for('admin_distribution') }}">
+                        <i class="fas fa-truck me-2"></i>Distribution
+                    </a>
+                    <a class="nav-link" href="{{ url_for('admin_suppliers') }}">
+                        <i class="fas fa-handshake me-2"></i>Suppliers
+                    </a>
+                    <a class="nav-link active" href="{{ url_for('admin_financial') }}">
+                        <i class="fas fa-chart-line me-2"></i>Financial
+                    </a>
+                </nav>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="col-md-9 col-lg-10">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2>Financial Management</h2>
+                <div class="d-flex gap-2">
+                    <select class="form-select" id="periodFilter" onchange="filterTransactions()">
+                        <option value="">All Time</option>
+                        <option value="today">Today</option>
+                        <option value="week">This Week</option>
+                        <option value="month">This Month</option>
+                        <option value="year">This Year</option>
+                    </select>
+                    <button class="btn btn-success" onclick="exportReport()">
+                        <i class="fas fa-download me-2"></i>Export
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Financial Summary -->
+            <div class="row mb-4">
+                <div class="col-md-3 mb-3">
+                    <div class="card bg-success text-white">
+                        <div class="card-body text-center">
+                            <i class="fas fa-arrow-up fa-2x mb-2"></i>
+                            <div class="h4">Rp {{ "{:,.0f}".format(total_income) }}</div>
+                            <div>Total Income</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <div class="card bg-danger text-white">
+                        <div class="card-body text-center">
+                            <i class="fas fa-arrow-down fa-2x mb-2"></i>
+                            <div class="h4">Rp {{ "{:,.0f}".format(total_expenses) }}</div>
+                            <div>Total Expenses</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <div class="card bg-{% if net_profit >= 0 %}primary{% else %}warning{% endif %} text-white">
+                        <div class="card-body text-center">
+                            <i class="fas fa-chart-line fa-2x mb-2"></i>
+                            <div class="h4">Rp {{ "{:,.0f}".format(net_profit) }}</div>
+                            <div>Net Profit</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <div class="card bg-info text-white">
+                        <div class="card-body text-center">
+                            <i class="fas fa-file-invoice-dollar fa-2x mb-2"></i>
+                            <div class="h4">{{ financial_records|length }}</div>
+                            <div>Transactions</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Package Revenue Breakdown -->
+            <div class="row mb-4">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0">Revenue by Package Type</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-4 text-center">
+                                    <div class="package-stat">
+                                        <div class="h3 text-secondary">Basic Package</div>
+                                        <div class="h4">Rp 50.000</div>
+                                        <div class="text-muted">per shipment</div>
+                                        <div class="progress mt-2">
+                                            <div class="progress-bar bg-secondary" style="width: 25%"></div>
+                                        </div>
+                                        <small class="text-muted">25% of total logistics revenue</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 text-center">
+                                    <div class="package-stat">
+                                        <div class="h3 text-primary">Standard Package</div>
+                                        <div class="h4">Rp 100.000</div>
+                                        <div class="text-muted">per shipment</div>
+                                        <div class="progress mt-2">
+                                            <div class="progress-bar bg-primary" style="width: 50%"></div>
+                                        </div>
+                                        <small class="text-muted">50% of total logistics revenue</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 text-center">
+                                    <div class="package-stat">
+                                        <div class="h3 text-warning">Premium Package</div>
+                                        <div class="h4">Rp 200.000</div>
+                                        <div class="text-muted">per shipment</div>
+                                        <div class="progress mt-2">
+                                            <div class="progress-bar bg-warning" style="width: 25%"></div>
+                                        </div>
+                                        <small class="text-muted">25% of total logistics revenue</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Financial Records -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Financial Transactions</h5>
+                </div>
+                <div class="card-body">
+                    {% if financial_records %}
+                        <div class="table-responsive">
+                            <table class="table table-striped" id="financialTable">
+                                <thead>
+                                    <tr>
+                                        <th>Transaction ID</th>
+                                        <th>Order ID</th>
+                                        <th>Type</th>
+                                        <th>Description</th>
+                                        <th>Amount</th>
+                                        <th>Customer</th>
+                                        <th>Package Type</th>
+                                        <th>Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for record in financial_records %}
+                                    <tr data-date="{{ record.transaction_date.isoformat() }}">
+                                        <td><strong>#{{ record.id }}</strong></td>
+                                        <td>#{{ record.order.id }}</td>
+                                        <td>
+                                            <span class="badge bg-{% if record.transaction_type == 'income' %}success{% else %}danger{% endif %}">
+                                                {% if record.transaction_type == 'income' %}
+                                                    <i class="fas fa-arrow-up me-1"></i>Income
+                                                {% else %}
+                                                    <i class="fas fa-arrow-down me-1"></i>Expense
+                                                {% endif %}
+                                            </span>
+                                        </td>
+                                        <td>{{ record.description }}</td>
+                                        <td>
+                                            <span class="text-{% if record.transaction_type == 'income' %}success{% else %}danger{% endif %}">
+                                                {% if record.transaction_type == 'income' %}+{% else %}-{% endif %}Rp {{ "{:,.0f}".format(record.amount) }}
+                                            </span>
+                                        </td>
+                                        <td>{{ record.order.user.username }}</td>
+                                        <td>
+                                            <span class="badge bg-{% if record.order.package_type == 'premium' %}warning{% elif record.order.package_type == 'standard' %}primary{% else %}secondary{% endif %}">
+                                                {{ record.order.package_type.title() }}
+                                            </span>
+                                        </td>
+                                        <td>{{ record.transaction_date.strftime('%d %b %Y %H:%M') }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="text-center py-5">
+                            <i class="fas fa-file-invoice-dollar fa-3x text-muted mb-3"></i>
+                            <h5 class="text-muted">No Financial Records Yet</h5>
+                            <p class="text-muted">Financial transactions will appear here as orders are processed.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <!-- Quick Financial Insights -->
+            <div class="row mt-4">
+                <div class="col-md-6 mb-3">
+                    <div class="card">
+                        <div class="card-header">
+                            <h6 class="mb-0">Monthly Revenue Trend</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="text-center py-3">
+                                <i class="fas fa-chart-area fa-3x text-muted mb-3"></i>
+                                <p class="text-muted">Revenue chart would be displayed here</p>
+                                <small class="text-muted">Integration with Chart.js for visual analytics</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 mb-3">
+                    <div class="card">
+                        <div class="card-header">
+                            <h6 class="mb-0">Top Performing Packages</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span>Standard Package</span>
+                                <span class="badge bg-primary">45 orders</span>
+                            </div>
+                            <div class="progress mb-3" style="height: 8px;">
+                                <div class="progress-bar bg-primary" style="width: 60%"></div>
+                            </div>
+                            
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span>Premium Package</span>
+                                <span class="badge bg-warning">20 orders</span>
+                            </div>
+                            <div class="progress mb-3" style="height: 8px;">
+                                <div class="progress-bar bg-warning" style="width: 30%"></div>
+                            </div>
+                            
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span>Basic Package</span>
+                                <span class="badge bg-secondary">10 orders</span>
+                            </div>
+                            <div class="progress" style="height: 8px;">
+                                <div class="progress-bar bg-secondary" style="width: 15%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function filterTransactions() {
+    const filterValue = document.getElementById('periodFilter').value;
+    const rows = document.querySelectorAll('#financialTable tbody tr');
+    const now = new Date();
+    
+    rows.forEach(row => {
+        const dateStr = row.dataset.date;
+        const transactionDate = new Date(dateStr);
+        let showRow = true;
+        
+        switch(filterValue) {
+            case 'today':
+                showRow = transactionDate.toDateString() === now.toDateString();
+                break;
+            case 'week':
+                const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+                showRow = transactionDate >= weekAgo;
+                break;
+            case 'month':
+                showRow = transactionDate.getMonth() === now.getMonth() && 
+                         transactionDate.getFullYear() === now.getFullYear();
+                break;
+            case 'year':
+                showRow = transactionDate.getFullYear() === now.getFullYear();
+                break;
+            default:
+                showRow = true;
+        }
+        
+        row.style.display = showRow ? '' : 'none';
+    });
+}
+
+function exportReport() {
+    alert('Exporting financial report...\n\nIn a full implementation, this would generate and download a comprehensive financial report in PDF or Excel format.');
+}
+
+// Add some interactivity to package statistics
+document.addEventListener('DOMContentLoaded', function() {
+    const packageStats = document.querySelectorAll('.package-stat');
+    packageStats.forEach(stat => {
+        stat.style.cursor = 'pointer';
+        stat.addEventListener('click', function() {
+            const packageType = this.querySelector('.h3').textContent;
+            alert('Viewing detailed analytics for ' + packageType);
+        });
+    });
+});
+</script>
+
+<style>
+.package-stat {
+    padding: 20px;
+    border-radius: 10px;
+    background: rgba(0,0,0,0.02);
+    transition: all 0.3s ease;
+}
+
+.package-stat:hover {
+    background: rgba(0,0,0,0.05);
+    transform: translateY(-2px);
+}
+
+.progress {
+    height: 8px;
+}
+
+#financialTable tbody tr:hover {
+    background-color: rgba(0,123,255,0.1);
+}
+</style>
+{% endblock %}

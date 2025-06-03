@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+
+{% block title %}About Us - SIMLOG{% endblock %}
+
+{% block content %}
+<div class="hero-section">
+    <div class="carousel-container">
+        <div class="carousel-wrapper">
+            <div class="carousel-slide active">
+                <img src="https://pixabay.com/get/gef5e12739eab9a4e1bc47ce4fc1f21f0e68cd4fd5bf0767d0ba9d83fc4e31c3f1dbb474ebbc04e54b821fbcf7b199a28ea5966e61a19b37e3d5d148afbe2a710_1280.jpg" alt="Logistics Warehouse 1">
+            </div>
+            <div class="carousel-slide">
+                <img src="https://pixabay.com/get/g4d9d35e45728d751acb1fc9ee688a966ba4d5ad37da101968f1d94e42daafb89ceeeab7f311a52e29fc5aff787c8c02b44bfa02e5cb97346a545b0a02cd0115b_1280.jpg" alt="Logistics Warehouse 2">
+            </div>
+            <div class="carousel-slide">
+                <img src="https://pixabay.com/get/g912edb2aeea7eef61d9425b998bdd3bb0c3c199fc145e6ba8d114f317acec3a29ae2db5b29342e8f6718cef0dd6c1d2b9f0ae58f2b8cc215166c69c3a4d23633_1280.jpg" alt="Logistics Warehouse 3">
+            </div>
+            <div class="carousel-slide">
+                <img src="https://pixabay.com/get/g30955f1f5891c8a7951315231441047f5098ad481fd0a2faf301ae060b450cd4f62a6fc498840e77042b1e0b568b8b58bad00687c550d0b0aa971765015787ef_1280.jpg" alt="Logistics Warehouse 4">
+            </div>
+        </div>
+        
+        <button class="carousel-control prev" onclick="changeSlide(-1)">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+        <button class="carousel-control next" onclick="changeSlide(1)">
+            <i class="fas fa-chevron-right"></i>
+        </button>
+        
+        <div class="hero-content">
+            <h1 class="hero-title">About Us</h1>
+            <p class="hero-subtitle">Mengenal SIMLOG Lebih Dekat</p>
+        </div>
+    </div>
+</div>
+
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <h2 class="text-center mb-5">Tentang SIMLOG</h2>
+                
+                <div class="mb-5">
+                    <h4><i class="fas fa-bullseye text-primary me-2"></i>Visi Kami</h4>
+                    <p class="lead">Menjadi penyedia solusi manajemen logistik terdepan di Indonesia yang memberikan kemudahan, efisiensi, dan transparansi dalam setiap proses bisnis.</p>
+                </div>
+                
+                <div class="mb-5">
+                    <h4><i class="fas fa-rocket text-primary me-2"></i>Misi Kami</h4>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Menghadirkan teknologi terdepan dalam manajemen supply chain</li>
+                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Memberikan pelayanan terbaik dengan standar internasional</li>
+                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Membantu bisnis berkembang melalui optimalisasi logistik</li>
+                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Menciptakan ekosistem logistik yang berkelanjutan</li>
+                    </ul>
+                </div>
+                
+                <div class="mb-5">
+                    <h4><i class="fas fa-history text-primary me-2"></i>Sejarah Perusahaan</h4>
+                    <p>SIMLOG didirikan pada tahun 2020 dengan visi untuk menghadirkan revolusi dalam dunia manajemen logistik di Indonesia. Berawal dari kebutuhan akan sistem yang terintegrasi dan mudah digunakan, kami telah melayani lebih dari 500 perusahaan di seluruh Indonesia.</p>
+                    
+                    <div class="row text-center mt-4">
+                        <div class="col-md-3 mb-3">
+                            <div class="card border-0">
+                                <div class="card-body">
+                                    <h3 class="text-primary">500+</h3>
+                                    <p class="mb-0">Klien Terpercaya</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <div class="card border-0">
+                                <div class="card-body">
+                                    <h3 class="text-primary">50+</h3>
+                                    <p class="mb-0">Kota Terjangkau</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <div class="card border-0">
+                                <div class="card-body">
+                                    <h3 class="text-primary">24/7</h3>
+                                    <p class="mb-0">Customer Support</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <div class="card border-0">
+                                <div class="card-body">
+                                    <h3 class="text-primary">99.9%</h3>
+                                    <p class="mb-0">Uptime System</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mb-5">
+                    <h4><i class="fas fa-users text-primary me-2"></i>Tim Kami</h4>
+                    <p>Didukung oleh tim profesional berpengalaman lebih dari 10 tahun di bidang logistik dan teknologi informasi, kami berkomitmen memberikan solusi terbaik untuk kebutuhan bisnis Anda.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

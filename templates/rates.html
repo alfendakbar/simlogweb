@@ -1,0 +1,234 @@
+{% extends "base.html" %}
+
+{% block title %}Our Rates - SIMLOG{% endblock %}
+
+{% block content %}
+<div class="hero-section">
+    <div class="carousel-container">
+        <div class="carousel-wrapper">
+            <div class="carousel-slide active">
+                <img src="https://pixabay.com/get/gef5e12739eab9a4e1bc47ce4fc1f21f0e68cd4fd5bf0767d0ba9d83fc4e31c3f1dbb474ebbc04e54b821fbcf7b199a28ea5966e61a19b37e3d5d148afbe2a710_1280.jpg" alt="Logistics Warehouse 1">
+            </div>
+            <div class="carousel-slide">
+                <img src="https://pixabay.com/get/g4d9d35e45728d751acb1fc9ee688a966ba4d5ad37da101968f1d94e42daafb89ceeeab7f311a52e29fc5aff787c8c02b44bfa02e5cb97346a545b0a02cd0115b_1280.jpg" alt="Logistics Warehouse 2">
+            </div>
+            <div class="carousel-slide">
+                <img src="https://pixabay.com/get/g912edb2aeea7eef61d9425b998bdd3bb0c3c199fc145e6ba8d114f317acec3a29ae2db5b29342e8f6718cef0dd6c1d2b9f0ae58f2b8cc215166c69c3a4d23633_1280.jpg" alt="Logistics Warehouse 3">
+            </div>
+            <div class="carousel-slide">
+                <img src="https://pixabay.com/get/g30955f1f5891c8a7951315231441047f5098ad481fd0a2faf301ae060b450cd4f62a6fc498840e77042b1e0b568b8b58bad00687c550d0b0aa971765015787ef_1280.jpg" alt="Logistics Warehouse 4">
+            </div>
+        </div>
+        
+        <button class="carousel-control prev" onclick="changeSlide(-1)">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+        <button class="carousel-control next" onclick="changeSlide(1)">
+            <i class="fas fa-chevron-right"></i>
+        </button>
+        
+        <div class="hero-content">
+            <h1 class="hero-title">Our Rates</h1>
+            <p class="hero-subtitle">Paket Layanan Logistik</p>
+        </div>
+    </div>
+</div>
+
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-10 mx-auto">
+                <h2 class="text-center mb-5">Pilih Paket Sesuai Kebutuhan Anda</h2>
+                
+                <div class="row">
+                    <!-- Basic Package -->
+                    <div class="col-lg-4 mb-4">
+                        <div class="card h-100 shadow-sm">
+                            <div class="card-header bg-light text-center">
+                                <h4 class="card-title text-primary">Basic Package</h4>
+                                <div class="h2 text-dark">Rp 50.000</div>
+                                <p class="text-muted">per pengiriman</p>
+                            </div>
+                            <div class="card-body">
+                                <ul class="list-unstyled">
+                                    <li class="mb-2">
+                                        <i class="fas fa-check text-success me-2"></i>
+                                        Pengiriman reguler (3-5 hari)
+                                    </li>
+                                    <li class="mb-2">
+                                        <i class="fas fa-check text-success me-2"></i>
+                                        Tracking dasar
+                                    </li>
+                                    <li class="mb-2">
+                                        <i class="fas fa-check text-success me-2"></i>
+                                        Maksimal 10 kg
+                                    </li>
+                                    <li class="mb-2">
+                                        <i class="fas fa-check text-success me-2"></i>
+                                        Asuransi barang Rp 500.000
+                                    </li>
+                                    <li class="mb-2">
+                                        <i class="fas fa-check text-success me-2"></i>
+                                        Customer support email
+                                    </li>
+                                    <li class="mb-2">
+                                        <i class="fas fa-times text-danger me-2"></i>
+                                        Priority handling
+                                    </li>
+                                    <li class="mb-2">
+                                        <i class="fas fa-times text-danger me-2"></i>
+                                        Real-time GPS tracking
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="card-footer text-center">
+                                <a href="{{ url_for('login') }}" class="btn btn-outline-primary">Pilih Paket</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Standard Package -->
+                    <div class="col-lg-4 mb-4">
+                        <div class="card h-100 shadow border-primary">
+                            <div class="card-header bg-primary text-white text-center">
+                                <div class="badge bg-warning text-dark mb-2">Most Popular</div>
+                                <h4 class="card-title">Standard Package</h4>
+                                <div class="h2">Rp 100.000</div>
+                                <p class="mb-0">per pengiriman</p>
+                            </div>
+                            <div class="card-body">
+                                <ul class="list-unstyled">
+                                    <li class="mb-2">
+                                        <i class="fas fa-check text-success me-2"></i>
+                                        Pengiriman cepat (1-3 hari)
+                                    </li>
+                                    <li class="mb-2">
+                                        <i class="fas fa-check text-success me-2"></i>
+                                        Real-time tracking
+                                    </li>
+                                    <li class="mb-2">
+                                        <i class="fas fa-check text-success me-2"></i>
+                                        Maksimal 25 kg
+                                    </li>
+                                    <li class="mb-2">
+                                        <i class="fas fa-check text-success me-2"></i>
+                                        Asuransi barang Rp 2.000.000
+                                    </li>
+                                    <li class="mb-2">
+                                        <i class="fas fa-check text-success me-2"></i>
+                                        Customer support 24/7
+                                    </li>
+                                    <li class="mb-2">
+                                        <i class="fas fa-check text-success me-2"></i>
+                                        Priority handling
+                                    </li>
+                                    <li class="mb-2">
+                                        <i class="fas fa-times text-danger me-2"></i>
+                                        Same day delivery
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="card-footer text-center">
+                                <a href="{{ url_for('login') }}" class="btn btn-primary">Pilih Paket</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Premium Package -->
+                    <div class="col-lg-4 mb-4">
+                        <div class="card h-100 shadow-sm">
+                            <div class="card-header bg-warning text-center">
+                                <h4 class="card-title text-dark">Premium Package</h4>
+                                <div class="h2 text-dark">Rp 200.000</div>
+                                <p class="text-muted">per pengiriman</p>
+                            </div>
+                            <div class="card-body">
+                                <ul class="list-unstyled">
+                                    <li class="mb-2">
+                                        <i class="fas fa-check text-success me-2"></i>
+                                        Same day delivery
+                                    </li>
+                                    <li class="mb-2">
+                                        <i class="fas fa-check text-success me-2"></i>
+                                        Real-time GPS tracking
+                                    </li>
+                                    <li class="mb-2">
+                                        <i class="fas fa-check text-success me-2"></i>
+                                        Maksimal 50 kg
+                                    </li>
+                                    <li class="mb-2">
+                                        <i class="fas fa-check text-success me-2"></i>
+                                        Asuransi barang Rp 10.000.000
+                                    </li>
+                                    <li class="mb-2">
+                                        <i class="fas fa-check text-success me-2"></i>
+                                        Dedicated customer manager
+                                    </li>
+                                    <li class="mb-2">
+                                        <i class="fas fa-check text-success me-2"></i>
+                                        White glove service
+                                    </li>
+                                    <li class="mb-2">
+                                        <i class="fas fa-check text-success me-2"></i>
+                                        Signature on delivery
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="card-footer text-center">
+                                <a href="{{ url_for('login') }}" class="btn btn-warning">Pilih Paket</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Additional Services -->
+                <div class="mt-5">
+                    <h3 class="text-center mb-4">Layanan Tambahan</h3>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5><i class="fas fa-shield-alt text-primary me-2"></i>Asuransi Tambahan</h5>
+                                    <p class="text-muted mb-0">Mulai dari Rp 5.000 per Rp 1.000.000 nilai barang</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5><i class="fas fa-box text-primary me-2"></i>Packaging Premium</h5>
+                                    <p class="text-muted mb-0">Rp 15.000 - Rp 50.000 tergantung ukuran</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5><i class="fas fa-snowflake text-primary me-2"></i>Cold Chain</h5>
+                                    <p class="text-muted mb-0">Rp 25.000 tambahan untuk barang yang memerlukan suhu khusus</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5><i class="fas fa-clock text-primary me-2"></i>Express Pickup</h5>
+                                    <p class="text-muted mb-0">Rp 20.000 untuk penjemputan dalam 2 jam</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="text-center mt-5">
+                    <h4>Butuh Paket Khusus?</h4>
+                    <p class="text-muted">Kami dapat menyesuaikan paket sesuai kebutuhan bisnis Anda</p>
+                    <a href="{{ url_for('contact') }}" class="btn btn-success btn-lg">
+                        <i class="fas fa-comments me-2"></i>Konsultasi Gratis
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

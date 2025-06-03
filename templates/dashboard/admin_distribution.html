@@ -1,0 +1,262 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Distribution - SIMLOG{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-5 pt-3">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-3 col-lg-2 sidebar">
+            <div class="d-flex flex-column">
+                <h5 class="text-danger mb-3">
+                    <i class="fas fa-user-shield me-2"></i>Admin Panel
+                </h5>
+                <nav class="nav flex-column">
+                    <a class="nav-link" href="{{ url_for('admin_dashboard') }}">
+                        <i class="fas fa-home me-2"></i>Overview
+                    </a>
+                    <a class="nav-link" href="{{ url_for('admin_logistics') }}">
+                        <i class="fas fa-warehouse me-2"></i>Logistics
+                    </a>
+                    <a class="nav-link" href="{{ url_for('admin_orders') }}">
+                        <i class="fas fa-shopping-cart me-2"></i>Orders
+                    </a>
+                    <a class="nav-link active" href="{{ url_for('admin_distribution') }}">
+                        <i class="fas fa-truck me-2"></i>Distribution
+                    </a>
+                    <a class="nav-link" href="{{ url_for('admin_suppliers') }}">
+                        <i class="fas fa-handshake me-2"></i>Suppliers
+                    </a>
+                    <a class="nav-link" href="{{ url_for('admin_financial') }}">
+                        <i class="fas fa-chart-line me-2"></i>Financial
+                    </a>
+                </nav>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="col-md-9 col-lg-10">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2>Distribution Management</h2>
+                <div class="d-flex gap-2">
+                    <select class="form-select" id="statusFilter" onchange="filterShipments()">
+                        <option value="">All Status</option>
+                        <option value="preparing">Preparing</option>
+                        <option value="in_transit">In Transit</option>
+                        <option value="delivered">Delivered</option>
+                    </select>
+                </div>
+            </div>
+            
+            <!-- Distribution Statistics -->
+            <div class="row mb-4">
+                <div class="col-md-3 mb-3">
+                    <div class="card bg-secondary text-white">
+                        <div class="card-body text-center">
+                            <i class="fas fa-boxes fa-2x mb-2"></i>
+                            <div class="h4">{{ shipments|length }}</div>
+                            <div>Total Shipments</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <div class="card bg-warning text-white">
+                        <div class="card-body text-center">
+                            <i class="fas fa-clock fa-2x mb-2"></i>
+                            <div class="h4">{{ shipments|selectattr('status', 'equalto', 'preparing')|list|length }}</div>
+                            <div>Preparing</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <div class="card bg-info text-white">
+                        <div class="card-body text-center">
+                            <i class="fas fa-truck fa-2x mb-2"></i>
+                            <div class="h4">{{ shipments|selectattr('status', 'equalto', 'in_transit')|list|length }}</div>
+                            <div>In Transit</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <div class="card bg-success text-white">
+                        <div class="card-body text-center">
+                            <i class="fas fa-check-circle fa-2x mb-2"></i>
+                            <div class="h4">{{ shipments|selectattr('status', 'equalto', 'delivered')|list|length }}</div>
+                            <div>Delivered</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Shipments List -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Shipment Tracking & Management</h5>
+                </div>
+                <div class="card-body">
+                    {% if shipments %}
+                        <div class="table-responsive">
+                            <table class="table table-striped" id="shipmentsTable">
+                                <thead>
+                                    <tr>
+                                        <th>Tracking No.</th>
+                                        <th>Order ID</th>
+                                        <th>Customer</th>
+                                        <th>Product</th>
+                                        <th>Package Type</th>
+                                        <th>Status</th>
+                                        <th>Current Location</th>
+                                        <th>Shipped Date</th>
+                                        <th>Est. Delivery</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for shipment in shipments %}
+                                    <tr data-status="{{ shipment.status }}">
+                                        <td><strong>{{ shipment.tracking_number }}</strong></td>
+                                        <td>#{{ shipment.order.id }}</td>
+                                        <td>{{ shipment.order.user.username }}</td>
+                                        <td>{{ shipment.order.product.name }}</td>
+                                        <td>
+                                            <span class="badge bg-{% if shipment.order.package_type == 'premium' %}warning{% elif shipment.order.package_type == 'standard' %}primary{% else %}secondary{% endif %}">
+                                                {{ shipment.order.package_type.title() }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            {% if shipment.status == 'preparing' %}
+                                                <span class="badge bg-secondary">
+                                                    <i class="fas fa-box me-1"></i>Preparing
+                                                </span>
+                                            {% elif shipment.status == 'in_transit' %}
+                                                <span class="badge bg-warning">
+                                                    <i class="fas fa-truck me-1"></i>In Transit
+                                                </span>
+                                            {% elif shipment.status == 'delivered' %}
+                                                <span class="badge bg-success">
+                                                    <i class="fas fa-check me-1"></i>Delivered
+                                                </span>
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ shipment.current_location or 'Warehouse' }}</td>
+                                        <td>
+                                            {% if shipment.shipped_date %}
+                                                {{ shipment.shipped_date.strftime('%d %b %Y') }}
+                                            {% else %}
+                                                <span class="text-muted">Not shipped</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if shipment.estimated_delivery %}
+                                                {{ shipment.estimated_delivery.strftime('%d %b %Y') }}
+                                            {% else %}
+                                                <span class="text-muted">TBD</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if shipment.status != 'delivered' %}
+                                            <button class="btn btn-sm btn-outline-primary" 
+                                                    onclick="updateShipmentStatus({{ shipment.id }}, '{{ shipment.tracking_number }}', '{{ shipment.status }}', '{{ shipment.current_location or '' }}')"
+                                                    data-bs-toggle="modal" data-bs-target="#updateStatusModal" title="Update Status">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            {% endif %}
+                                            <button class="btn btn-sm btn-outline-info" onclick="trackShipment('{{ shipment.tracking_number }}')" title="Track">
+                                                <i class="fas fa-map-marker-alt"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="text-center py-5">
+                            <i class="fas fa-truck fa-3x text-muted mb-3"></i>
+                            <h5 class="text-muted">No Shipments Yet</h5>
+                            <p class="text-muted">Confirmed orders will generate shipments that appear here.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Update Status Modal -->
+<div class="modal fade" id="updateStatusModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Update Shipment Status</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form method="POST" id="updateStatusForm">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Tracking Number</label>
+                        <input type="text" class="form-control" id="trackingNumber" readonly>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="status" class="form-label">Status</label>
+                        <select class="form-select" id="status" name="status" required>
+                            <option value="preparing">Preparing</option>
+                            <option value="in_transit">In Transit</option>
+                            <option value="delivered">Delivered</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="current_location" class="form-label">Current Location</label>
+                        <input type="text" class="form-control" id="current_location" name="current_location" 
+                               placeholder="e.g., Jakarta Distribution Center">
+                    </div>
+                    
+                    <div class="alert alert-info">
+                        <small>
+                            <i class="fas fa-info-circle me-1"></i>
+                            <strong>Status Guide:</strong><br>
+                            • <strong>Preparing:</strong> Package is being prepared for shipment<br>
+                            • <strong>In Transit:</strong> Package is on the way to destination<br>
+                            • <strong>Delivered:</strong> Package has been successfully delivered
+                        </small>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Update Status</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function filterShipments() {
+    const filterValue = document.getElementById('statusFilter').value;
+    const rows = document.querySelectorAll('#shipmentsTable tbody tr');
+    
+    rows.forEach(row => {
+        if (filterValue === '' || row.dataset.status === filterValue) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    });
+}
+
+function updateShipmentStatus(shipmentId, trackingNumber, currentStatus, currentLocation) {
+    document.getElementById('trackingNumber').value = trackingNumber;
+    document.getElementById('status').value = currentStatus;
+    document.getElementById('current_location').value = currentLocation;
+    document.getElementById('updateStatusForm').action = '/admin/shipments/' + shipmentId + '/update';
+}
+
+function trackShipment(trackingNumber) {
+    alert('Tracking shipment: ' + trackingNumber + '\n\nIn a full implementation, this would show detailed tracking information with map integration.');
+}
+</script>
+{% endblock %}

@@ -1,0 +1,152 @@
+{% extends "base.html" %}
+
+{% block title %}Distribution - SIMLOG{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-5 pt-3">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-3 col-lg-2 sidebar">
+            <div class="d-flex flex-column">
+                <h5 class="text-primary mb-3">
+                    <i class="fas fa-tachometer-alt me-2"></i>User Dashboard
+                </h5>
+                <nav class="nav flex-column">
+                    <a class="nav-link" href="{{ url_for('user_dashboard') }}">
+                        <i class="fas fa-home me-2"></i>Overview
+                    </a>
+                    <a class="nav-link" href="{{ url_for('logistics') }}">
+                        <i class="fas fa-warehouse me-2"></i>Logistics
+                    </a>
+                    <a class="nav-link" href="{{ url_for('orders') }}">
+                        <i class="fas fa-shopping-cart me-2"></i>Orders
+                    </a>
+                    <a class="nav-link active" href="{{ url_for('distribution') }}">
+                        <i class="fas fa-truck me-2"></i>Distribution
+                    </a>
+                </nav>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="col-md-9 col-lg-10">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2>Distribution Tracking</h2>
+            </div>
+            
+            <!-- Shipment Tracking -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">My Shipments</h5>
+                </div>
+                <div class="card-body">
+                    {% if shipments %}
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Tracking Number</th>
+                                        <th>Order ID</th>
+                                        <th>Product</th>
+                                        <th>Status</th>
+                                        <th>Current Location</th>
+                                        <th>Shipped Date</th>
+                                        <th>Est. Delivery</th>
+                                        <th>Actual Delivery</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for shipment in shipments %}
+                                    <tr>
+                                        <td><strong>{{ shipment.tracking_number }}</strong></td>
+                                        <td>#{{ shipment.order.id }}</td>
+                                        <td>{{ shipment.order.product.name }}</td>
+                                        <td>
+                                            {% if shipment.status == 'preparing' %}
+                                                <span class="badge bg-secondary">
+                                                    <i class="fas fa-box me-1"></i>Preparing
+                                                </span>
+                                            {% elif shipment.status == 'in_transit' %}
+                                                <span class="badge bg-warning">
+                                                    <i class="fas fa-truck me-1"></i>In Transit
+                                                </span>
+                                            {% elif shipment.status == 'delivered' %}
+                                                <span class="badge bg-success">
+                                                    <i class="fas fa-check me-1"></i>Delivered
+                                                </span>
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ shipment.current_location or 'Not specified' }}</td>
+                                        <td>
+                                            {% if shipment.shipped_date %}
+                                                {{ shipment.shipped_date.strftime('%d %b %Y') }}
+                                            {% else %}
+                                                <span class="text-muted">Not shipped</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if shipment.estimated_delivery %}
+                                                {{ shipment.estimated_delivery.strftime('%d %b %Y') }}
+                                            {% else %}
+                                                <span class="text-muted">TBD</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if shipment.actual_delivery %}
+                                                <span class="text-success">
+                                                    {{ shipment.actual_delivery.strftime('%d %b %Y') }}
+                                                </span>
+                                            {% else %}
+                                                <span class="text-muted">Pending</span>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="text-center py-5">
+                            <i class="fas fa-truck fa-3x text-muted mb-3"></i>
+                            <h5 class="text-muted">No Shipments Yet</h5>
+                            <p class="text-muted">Your confirmed orders will appear here for tracking.</p>
+                            <a href="{{ url_for('orders') }}" class="btn btn-primary">
+                                <i class="fas fa-shopping-cart me-2"></i>View Orders
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <!-- Shipment Status Legend -->
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h6 class="mb-0">Shipment Status Guide</h6>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4 mb-2">
+                            <span class="badge bg-secondary me-2">
+                                <i class="fas fa-box me-1"></i>Preparing
+                            </span>
+                            Order is being prepared for shipment
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <span class="badge bg-warning me-2">
+                                <i class="fas fa-truck me-1"></i>In Transit
+                            </span>
+                            Package is on the way to destination
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <span class="badge bg-success me-2">
+                                <i class="fas fa-check me-1"></i>Delivered
+                            </span>
+                            Package has been successfully delivered
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
