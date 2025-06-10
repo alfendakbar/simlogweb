@@ -15,11 +15,14 @@ db = SQLAlchemy(model_class=Base)
 
 # Create the app
 app = Flask(__name__)
-app.secret_key = os.environ.get("SESSION_SECRET")
+# app.secret_key = os.environ.get("SESSION_SECRET")
+# Ganti baris lama dengan yang ini untuk pengembangan lokal
+app.secret_key = 'dev-secret-key-simlog-inirahasia'
 app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
 
 # Configure the database
-app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL")
+# Ganti dengan baris ini untuk koneksi MySQL lokal
+app.config["SQLALCHEMY_DATABASE_URI"] = "mysql+mysqlconnector://root:@localhost/simlog_db"
 app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
     "pool_recycle": 300,
     "pool_pre_ping": True,

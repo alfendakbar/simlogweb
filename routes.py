@@ -239,6 +239,15 @@ def distribution():
     user_shipments = db.session.query(Shipment).join(Order).filter(Order.user_id == current_user.id).all()
     return render_template('dashboard/distribution.html', shipments=user_shipments)
 
+@app.route('/suppliers')
+@login_required
+def view_suppliers():
+    if current_user.role == 'admin':
+        return redirect(url_for('admin_suppliers'))
+    
+    suppliers = Supplier.query.all()
+    return render_template('dashboard/suppliers.html', suppliers=suppliers)
+
 # Admin Routes
 @app.route('/admin/logistics')
 @login_required

@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block title %}Suppliers - SIMLOG{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-5 pt-3">
+    <div class="row">
+        <div class="col-md-3 col-lg-2 sidebar">
+            <div class="d-flex flex-column">
+                <h5 class="text-primary mb-3">
+                    <i class="fas fa-tachometer-alt me-2"></i>User Dashboard
+                </h5>
+                <nav class="nav flex-column">
+                    <a class="nav-link" href="{{ url_for('user_dashboard') }}">
+                        <i class="fas fa-home me-2"></i>Overview
+                    </a>
+                    <a class="nav-link" href="{{ url_for('logistics') }}">
+                        <i class="fas fa-warehouse me-2"></i>Logistics
+                    </a>
+                    <a class="nav-link" href="{{ url_for('orders') }}">
+                        <i class="fas fa-shopping-cart me-2"></i>Orders
+                    </a>
+                    <a class="nav-link" href="{{ url_for('distribution') }}">
+                        <i class="fas fa-truck me-2"></i>Distribution
+                    </a>
+                    <a class="nav-link" href="{{ url_for('view_suppliers') }}">
+                        <i class="fas fa-handshake me-2"></i>Suppliers
+                    </a>
+                </nav>
+            </div>
+        </div>
+
+        <div class="col-md-9 col-lg-10">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2>Supplier Directory</h2>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Available Suppliers</h5>
+                </div>
+                <div class="card-body">
+                    {% if suppliers %}
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Supplier Name</th>
+                                        <th>Contact Person</th>
+                                        <th>Email</th>
+                                        <th>Phone</th>
+                                        <th>Address</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for supplier in suppliers %}
+                                    <tr>
+                                        <td><strong>{{ supplier.name }}</strong></td>
+                                        <td>{{ supplier.contact_person or 'N/A' }}</td>
+                                        <td>{{ supplier.email or 'N/A' }}</td>
+                                        <td>{{ supplier.phone or 'N/A' }}</td>
+                                        <td>{{ supplier.address or 'N/A' }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="text-center py-5">
+                            <i class="fas fa-handshake-slash fa-3x text-muted mb-3"></i>
+                            <h5 class="text-muted">No Suppliers Available</h5>
+                            <p class="text-muted">There are no suppliers listed in the system yet.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
